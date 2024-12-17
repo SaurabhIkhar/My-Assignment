@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saurabh's Assignment</title>
+    <style>
+        .container {
+            display: grid;
+            grid-template-columns: repeat(12, 50px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        
+        .div-box {
+            width: 50px;
+            height: 50px;
+            background-color: #ff0000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            border: 1px solid black;
+            cursor: pointer;
+        }
+        
+        .selected {
+            background-color: #00ff00 !important;
+            border: 2px solid #ffff00;
+            box-shadow: 0 0 10px #000000;
+        }
+        
+        .row-highlight {
+            background-color: #0000ff !important;
+        }
+        
+        .col-highlight {
+            background-color: #008e5e !important;
+        }
+        
+        #info {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 20px;
+            color: #0000ff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="divContainer"></div>
+    <div id="info">Click on any division</div>
+
+    <script>
+        const rows = 4;
+        const cols = 12;
+
+
+        const container = document.getElementById('divContainer');
+        for (let i = 1; i <= rows * cols; i++) {
+            const div = document.createElement('div');
+            div.className = 'div-box';
+            div.textContent = `div ${i}`;
+            div.dataset.index = i;
+            container.appendChild(div);
+        }
+
+
+        container.addEventListener('click', function(e) {
+            if (e.target.classList.contains('div-box')) {
+                const selectedDiv = e.target;
+                const index = parseInt(selectedDiv.dataset.index);
+
+
+                document.querySelectorAll('.div-box').forEach(div => {
+                    div.classList.remove('selected', 'row-highlight', 'col-highlight');
+                    div.style.backgroundColor = '#ff0000';
+                });
+
+
+                selectedDiv.classList.add('selected');
+
+
+                document.getElementById('info').textContent = `div ${index} is selected`;
+
+
+                const rowStart = Math.floor((index - 1) / cols) * cols + 1;
+                for (let i = rowStart; i < rowStart + cols; i++) {
+                    if (i !== index) {
+                        document.querySelector(`[data-index="${i}"]`).classList.add('row-highlight');
+                    }
+                }
+
+
+                const colNumber = (index - 1) % cols + 1;
+                for (let i = colNumber; i <= rows * cols; i += cols) {
+                    if (i !== index) {
+                        document.querySelector(`[data-index="${i}"]`).classList.add('col-highlight');
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
